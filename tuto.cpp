@@ -1,18 +1,18 @@
-// Include standard headers
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 
 
-// Include GLEW
 #include <GL/glew.h>
 
-// Include GLFW
+	// Include GLFW
 #include <GLFW/glfw3.h>
 
-// Include GLM
+	// Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+	
 using namespace glm;
 
 // Achtung, die OpenGL-Tutorials nutzen glfw 2.7, glfw kommt mit einem veränderten API schon in der Version 3 
@@ -22,8 +22,6 @@ using namespace glm;
 
 // Wuerfel und Kugel
 #include "objects.hpp"
-
-
 
 // Erklären ObenGL-Statemachine, lowlevel
 // Version 1: seit 1992, elegantes API für die Plattformunabhägige 3D-Programmierung 
@@ -113,7 +111,7 @@ using namespace glm;
 // (5 Punkte: 3 Rotationen, Teekanne, texturiert, Roboter, Licht am Ende) 
 
 #ifdef UEBUNG5
-	#include "objloader.hpp"
+#include "objloader.hpp"
 #endif
 
 #ifdef UEBUNG7
@@ -122,11 +120,11 @@ using namespace glm;
 
 #ifdef UEBUNG2
 #ifdef UEBUNG3
-	float angleX = 0.0f;
-	float angleY = 0.0f;
-	float angleZ = 0.0f;
+float angleX = 0.0f;
+float angleY = 0.0f;
+float angleZ = 0.0f;
 #else
-	float angle = 0.0f;
+float angle = 0.0f;
 #endif
 #endif
 
@@ -157,9 +155,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		angle += 5.0;
 		break;
 #endif
-		
 
-	
+
+
 	default:
 		break;
 	}
@@ -177,7 +175,7 @@ GLuint programID;
 void sendMVP()
 {
 	// Our ModelViewProjection : multiplication of our 3 matrices
-	glm::mat4 MVP = Projection * View * Model; 
+	glm::mat4 MVP = Projection * View * Model;
 	// Send our transformation to the currently bound shader, 
 	// in the "MVP" uniform, konstant fuer alle Eckpunkte
 	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
@@ -197,6 +195,22 @@ void drawCS() {
 	drawWireCube();
 
 #ifdef UEBUNG10
+	//skaliere in y richtung
+	Model = glm::scale(Save, glm::vec3(0.01, 2.00, 0.01));
+	//send es zur grafikkarten
+	sendMVP();
+	//zeichne ein neues objekt drawwireCube();
+	drawWireCube();
+
+	//skaliere in Z richtung
+	Model = glm::scale(Save, glm::vec3(0.01, 0.01, 2.00));
+	//send es zur grafikkarten
+	sendMVP();
+	//zeichne ein neues objekt drawwireCube();
+	drawWireCube();
+	//speichere die transformation zurück zum Model
+
+	Model = Save;
 
 #endif
 }
@@ -217,10 +231,10 @@ int main(void)
 	// Open a window and create its OpenGL context
 	// glfwWindowHint vorher aufrufen, um erforderliche Resourcen festzulegen
 	GLFWwindow* window = glfwCreateWindow(1024, // Breite
-										  768,  // Hoehe
-										  "CG - Tutorial", // Ueberschrift
-										  NULL,  // windowed mode
-										  NULL); // shared windoe
+		768,  // Hoehe
+		"CG - Tutorial", // Ueberschrift
+		NULL,  // windowed mode
+		NULL); // shared windoe
 
 	if (!window)
 	{
@@ -229,7 +243,7 @@ int main(void)
 	}
 
 	// Make the window's context current (wird nicht automatisch gemacht)
-    glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window);
 
 	// Initialize GLEW
 	// GLEW ermöglicht Zugriff auf OpenGL-API > 1.1
@@ -260,11 +274,11 @@ int main(void)
 	loadOBJ("teapot.obj", vertices, uvs, normals);
 
 	GLuint VertexArrayIDTeapot;
-	glGenVertexArrays(1,&VertexArrayIDTeapot);
+	glGenVertexArrays(1, &VertexArrayIDTeapot);
 	glBindVertexArray(VertexArrayIDTeapot);
 
 	GLuint vertexBuffer;
-	glGenBuffers(1,&vertexBuffer);
+	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
@@ -288,9 +302,9 @@ int main(void)
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(1); // siehe layout im vertex shader
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0); 
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	// Load the texture
-	GLuint Texture = loadBMP_custom("mandrill.bmp"); 
+	GLuint Texture = loadBMP_custom("mandrill.bmp");
 #endif
 #endif
 
@@ -317,44 +331,44 @@ int main(void)
 
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-		
+
 		// Camera matrix
-		View = glm::lookAt(glm::vec3(0,0,-5), // Camera is at (0,0,-5), in World Space
-						   glm::vec3(0,0,0),  // and looks at the origin
-						   glm::vec3(0,1,0)); // Head is up (set to 0,-1,0 to look upside-down)
-		
-		// Model matrix : an identity matrix (model will be at the origin)
+		View = glm::lookAt(glm::vec3(0, 0, -5), // Camera is at (0,0,-5), in World Space
+			glm::vec3(0, 0, 0),  // and looks at the origin
+			glm::vec3(0, 1, 0)); // Head is up (set to 0,-1,0 to look upside-down)
+
+								 // Model matrix : an identity matrix (model will be at the origin)
 		Model = glm::mat4(1.0f);
 
 
 		//jedes object hat seine eigene matrix, vertex array object
 		// translate = verschieben
 #ifdef UEBUNG1
-	#ifdef UEBUNG2
-		#ifdef UEBUNG3
+#ifdef UEBUNG2
+#ifdef UEBUNG3
 		Model = glm::rotate(Model, angleX, glm::vec3(1.0, 0, 0));
 		Model = glm::rotate(Model, angleY, glm::vec3(0, 1.0, 0));
 		Model = glm::rotate(Model, angleZ, glm::vec3(0, 0, 1.0));
-		#else
+#else
 		Model = glm::rotate(Model, angle, glm::vec3(1.0, 0, 0));
-		#endif
-		#ifdef UEBUNG5
+#endif
+#ifdef UEBUNG5
 
 #ifdef UEBUNG8
 		glm::mat4 Save = Model; // ursprungliche mat speichern
-		Model = glm::translate(Model, glm::vec3(1.5,0,0)); // wie viel obj verschieben, x axe
+		Model = glm::translate(Model, glm::vec3(1.5, 0, 0)); // wie viel obj verschieben, x axe
 #endif
 
-		Model = glm::scale(Model, glm::vec3(1.0f/1000.0f, 1.0f / 1000.0f, 1.0f / 1000.0f));
-		#endif
-	#else
+		Model = glm::scale(Model, glm::vec3(1.0f / 1000.0f, 1.0f / 1000.0f, 1.0f / 1000.0f));
+#endif
+#else
 		Model = glm::rotate(Model, 30.0f, glm::vec3(1.0, 1.0, 0));
-	#endif
+#endif
 #endif
 
 		sendMVP();
 #ifdef UEBUNG6
-		glm::vec3 lightPos = glm::vec3(4,4,-4);
+		glm::vec3 lightPos = glm::vec3(4, 4, -4);
 		glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
 #endif
 
@@ -373,15 +387,15 @@ int main(void)
 		drawCube();
 #endif
 #else
-		drawWireCube();		
+		drawWireCube();
 #endif
 
 
 #ifdef UEBUNG8
 		Model = Save;
-		Model = glm::scale(Model, glm::vec3(0.5,0.5,0.5)); //50% kleiner
+		Model = glm::scale(Model, glm::vec3(0.5, 0.5, 0.5)); //50% kleiner
 		sendMVP(); //schicken neu an mvp 
-		drawSphere(10,10);
+		drawSphere(10, 10);
 
 #endif
 
@@ -393,8 +407,8 @@ int main(void)
 		glfwSwapBuffers(window);
 
 		// Poll for and process events 
-        glfwPollEvents();
-	} 
+		glfwPollEvents();
+	}
 #ifdef UEBUNG5
 	glDeleteBuffers(1, &vertexBuffer);
 #endif
@@ -413,4 +427,3 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
-
