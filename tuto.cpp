@@ -174,7 +174,6 @@ glm::mat4 Model;
 GLuint programID;
 
 
-
 void sendMVP()
 {
 	// Our ModelViewProjection : multiplication of our 3 matrices
@@ -189,6 +188,19 @@ void sendMVP()
 
 #endif
 }
+
+#ifdef UEBUNG9
+void drawCS() {
+	glm::mat4 Save = Model;
+	Model = glm::scale(Save, glm::vec3(2.0, 0.01, 0.01));
+	sendMVP();
+	drawWireCube();
+
+#ifdef UEBUNG10
+
+#endif
+}
+#endif
 
 int main(void)
 {
@@ -314,6 +326,9 @@ int main(void)
 		// Model matrix : an identity matrix (model will be at the origin)
 		Model = glm::mat4(1.0f);
 
+
+		//jedes object hat seine eigene matrix, vertex array object
+		// translate = verschieben
 #ifdef UEBUNG1
 	#ifdef UEBUNG2
 		#ifdef UEBUNG3
@@ -324,6 +339,12 @@ int main(void)
 		Model = glm::rotate(Model, angle, glm::vec3(1.0, 0, 0));
 		#endif
 		#ifdef UEBUNG5
+
+#ifdef UEBUNG8
+		glm::mat4 Save = Model; // ursprungliche mat speichern
+		Model = glm::translate(Model, glm::vec3(1.5,0,0)); // wie viel obj verschieben, x axe
+#endif
+
 		Model = glm::scale(Model, glm::vec3(1.0f/1000.0f, 1.0f / 1000.0f, 1.0f / 1000.0f));
 		#endif
 	#else
@@ -353,6 +374,19 @@ int main(void)
 #endif
 #else
 		drawWireCube();		
+#endif
+
+
+#ifdef UEBUNG8
+		Model = Save;
+		Model = glm::scale(Model, glm::vec3(0.5,0.5,0.5)); //50% kleiner
+		sendMVP(); //schicken neu an mvp 
+		drawSphere(10,10);
+
+#endif
+
+#ifdef UEBUNG9
+		drawCS();
 #endif
 
 		// Swap buffers
